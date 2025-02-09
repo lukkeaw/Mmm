@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💖 รับคำปรึกษาออนไลน์ 💖</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+        /* 🌸 พื้นหลังโทนชมพู + ม่วงลาเวนเดอร์ */
+        body {
+            font-family: 'Press Start 2P', cursive;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #fbc2eb, #a6c1ee);
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 600px;
+            margin: 50px auto;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border: 8px solid #ff66b2;
+            border-radius: 15px;
+            box-shadow: 10px 10px 0px #d94f8c;
+            position: relative;
+        }
+
+        h1 {
+            font-size: 18px;
+            color: #333;
+            text-shadow: 2px 2px #ff66b2;
+        }
+
+        /* ปุ่ม */
+        .button {
+            display: inline-block;
+            background: #ff66b2;
+            color: white;
+            padding: 15px 20px;
+            text-decoration: none;
+            font-size: 14px;
+            border-radius: 8px;
+            box-shadow: 4px 4px 0px #d94f8c;
+            transition: 0.2s;
+            animation: pulse 1.5s infinite;
+        }
+
+        .button:hover {
+            transform: scale(1.1);
+        }
+
+        /* 🌟 ปุ่มเปิดแชท */
+        .chat-icon {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #ff66b2;
+            color: white;
+            padding: 15px;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 4px 4px 0px #d94f8c;
+            font-size: 20px;
+        }
+
+        /* 💬 แชทบอท */
+        .chatbot {
+            display: none;
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            width: 300px;
+            background: #fff;
+            border: 4px solid #ff66b2;
+            border-radius: 10px;
+            box-shadow: 5px 5px 0px #d94f8c;
+            overflow: hidden;
+        }
+
+        .chat-header {
+            background: #ff66b2;
+            color: white;
+            padding: 10px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .chat-body {
+            height: 200px;
+            overflow-y: auto;
+            padding: 10px;
+            font-size: 12px;
+            text-align: left;
+        }
+
+        .chat-input {
+            display: flex;
+            padding: 10px;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 5px;
+        }
+
+        .chat-input button {
+            background: #ff66b2;
+            color: white;
+            border: none;
+            padding: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>💖 MindCare Online 💖</h1>
+        <p>กรอกข้อมูลในฟอร์มด้านล่างเพื่อรับคำปรึกษาออนไลน์:</p>
+
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSeuRqlRsirz6BHZ8zLRaV9f-XEQKrN45IPhaD-i6_o5UUaLQw/viewform?usp=dialog/viewform" 
+           class="button" 
+           onclick="playClickSound()" 
+           target="_blank">
+           📋 รับคำปรึกษา
+        </a>
+    </div>
+
+    <!-- 💬 ปุ่มเปิดแชท -->
+    <div class="chat-icon" onclick="toggleChat()">💬</div>
+
+    <!-- 💖 แชทบอท -->
+    <div class="chatbot" id="chatbot">
+        <div class="chat-header" onclick="toggleChat()">💖 MindCare Bot (คลิกปิด) 💖</div>
+        <div class="chat-body" id="chat-body">
+            <p>👋 สวัสดี! ฉันคือ MindCare Bot! มีอะไรให้ช่วยไหม?</p>
+        </div>
+        <div class="chat-input">
+            <input type="text" id="userInput" placeholder="พิมพ์ข้อความ...">
+            <button onclick="sendMessage()">📩</button>
+        </div>
+    </div>
+
+    <script>
+        function toggleChat() {
+            let chatbot = document.getElementById("chatbot");
+            chatbot.style.display = (chatbot.style.display === "none" || chatbot.style.display === "") ? "block" : "none";
+        }
+
+        function sendMessage() {
+            let inputField = document.getElementById("userInput");
+            let message = inputField.value.trim();
+            if (message === "") return;
+
+            let chatBody = document.getElementById("chat-body");
+
+            let userMessage = document.createElement("p");
+            userMessage.innerHTML = "🧑: " + message;
+            chatBody.appendChild(userMessage);
+
+            inputField.value = ""; 
+            chatBody.scrollTop = chatBody.scrollHeight;
+
+            setTimeout(() => {
+                let botMessage = document.createElement("p");
+                botMessage.innerHTML = "🤖: " + getBotReply(message);
+                chatBody.appendChild(botMessage);
+                chatBody.scrollTop = chatBody.scrollHeight;
+                playBotSound();
+            }, 1000);
+        }
+
+        function playClickSound() {
+            new Audio("https://www.myinstants.com/media/sounds/click.mp3").play();
+        }
+
+        function playBotSound() {
+            new Audio("https://www.myinstants.com/media/sounds/pop.mp3").play();
+        }
+
+        function getBotReply(userText) {
+            userText = userText.toLowerCase();
+            let responses = {
+                "สวัสดี": "หวัดดี! 💖 ยินดีต้อนรับสู่ MindCare 🌟",
+                "เครียด": "เราเข้าใจคุณนะ 💕 ลองหายใจลึก ๆ แล้วค่อย ๆ ผ่อนคลายดูสิ!",
+                "เศร้า": "บางครั้งก็โอเคที่จะเศร้านะ 🤗 ลองฟังเพลงที่ชอบดูไหม?",
+                "เหนื่อย": "พักผ่อนบ้างนะ 🌿 ดื่มน้ำเยอะ ๆ และหาของอร่อยกิน 🍰",
+                "ไปก่อนนะ": "โอเค! 🌸 ไว้เจอกันใหม่นะ! รักษาสุขภาพด้วย 💖"
+            };
+            
+            return responses[userText] || "ขอโทษนะ ฉันไม่เข้าใจ ลองถามใหม่อีกครั้งได้ไหม? 🤔";
+        }
+    </script>
+</body>
+</html>
